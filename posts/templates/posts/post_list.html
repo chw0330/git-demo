@@ -7,7 +7,7 @@
     <style>
         :root {
             color-scheme: light;
-            --bg: #f4f1ea;
+            --bg: #edf8ef;
             --surface: #fffdf8;
             --surface-soft: #f9f6ef;
             --ink: #20242b;
@@ -26,12 +26,28 @@
 
         body {
             margin: 0;
-            background:
-                linear-gradient(180deg, rgba(255, 253, 248, 0.92), rgba(244, 241, 234, 0.98)),
-                var(--bg);
+            background: linear-gradient(
+                135deg,
+                #edf8ef 0%,
+                #f7fbf8 42%,
+                #f3effc 58%,
+                #ebe3fa 100%
+            );
+            background-size: 240% 240%;
             color: var(--ink);
             font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
             line-height: 1.65;
+            animation: backgroundSlide 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes backgroundSlide {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 100% 50%;
+            }
         }
 
         .page {
