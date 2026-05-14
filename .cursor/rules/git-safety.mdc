@@ -1,0 +1,16 @@
+---
+description: Keep this project protected with small Git checkpoints.
+alwaysApply: true
+---
+
+Before making code edits, inspect the Git working tree with `git status --short`.
+
+After a meaningful, tested change:
+
+1. Run the relevant checks or tests.
+2. Show the user the changed files.
+3. Create a small Git checkpoint commit when Git user identity is configured.
+4. If Git user identity is missing, tell the user the exact `git config user.name` and `git config user.email` commands needed before committing.
+
+Never run destructive Git commands such as `git reset --hard`, `git clean`, or `git checkout -- <file>` unless the user explicitly asks for that exact operation.
+

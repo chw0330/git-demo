@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>轻博客</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f4f1ea;
+            --surface: #fffdf8;
+            --surface-soft: #f9f6ef;
+            --ink: #20242b;
+            --muted: #68707c;
+            --line: #ded7ca;
+            --accent: #285f8f;
+            --accent-strong: #1f4a70;
+            --accent-soft: #e9f1f7;
+            --green: #2d7651;
+            --shadow: 0 18px 44px rgba(42, 36, 27, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background:
+                linear-gradient(180deg, rgba(255, 253, 248, 0.92), rgba(244, 241, 234, 0.98)),
+                var(--bg);
+            color: var(--ink);
+            font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+            line-height: 1.65;
+        }
+
+        .page {
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 34px 0 56px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 28px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mark {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            place-items: center;
+            border-radius: 8px;
+            background: var(--ink);
+            color: #fffdf8;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 28px;
+            line-height: 1.1;
+            letter-spacing: 0;
+        }
+
+        .brand p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: max-content;
+            padding: 8px 11px;
+            border: 1px solid rgba(45, 118, 81, 0.22);
+            border-radius: 999px;
+            color: var(--green);
+            background: rgba(45, 118, 81, 0.08);
+            font-size: 14px;
+        }
+
+        .status::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: 1.35fr 0.65fr;
+            gap: 24px;
+            align-items: end;
+            margin-bottom: 26px;
+        }
+
+        .summary h2 {
+            margin: 0;
+            max-width: 760px;
+            font-size: clamp(34px, 5vw, 56px);
+            line-height: 1.05;
+            letter-spacing: 0;
+        }
+
+        .summary p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        .count {
+            justify-self: end;
+            width: min(100%, 240px);
+            padding: 18px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface);
+            box-shadow: var(--shadow);
+        }
+
+        .count strong {
+            display: block;
+            font-size: 34px;
+            line-height: 1;
+        }
+
+        .count span {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(300px, 390px) 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .composer,
+        .post {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface);
+            box-shadow: 0 12px 30px rgba(42, 36, 27, 0.08);
+        }
+
+        .composer {
+            position: sticky;
+            top: 24px;
+            padding: 22px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            font-size: 20px;
+            letter-spacing: 0;
+        }
+
+        .section-title span {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            margin-bottom: 14px;
+            padding: 12px 13px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            color: var(--ink);
+            font: inherit;
+            background: #ffffff;
+            transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: var(--accent);
+            outline: 0;
+            box-shadow: 0 0 0 3px rgba(40, 95, 143, 0.15);
+            background: #fff;
+        }
+
+        button {
+            display: inline-flex;
+            width: 100%;
+            min-height: 48px;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 0;
+            border-radius: 6px;
+            padding: 12px 16px;
+            background: var(--accent);
+            color: white;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 140ms ease, background 140ms ease, box-shadow 140ms ease;
+        }
+
+        button:hover {
+            background: var(--accent-strong);
+            box-shadow: 0 10px 20px rgba(40, 95, 143, 0.22);
+            transform: translateY(-1px);
+        }
+
+        .message {
+            margin: 0 0 16px;
+            padding: 10px 12px;
+            border: 1px solid rgba(45, 118, 81, 0.25);
+            border-radius: 6px;
+            color: var(--green);
+            background: rgba(45, 118, 81, 0.08);
+        }
+
+        .feed {
+            display: grid;
+            gap: 16px;
+        }
+
+        .feed-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 2px 0 4px;
+        }
+
+        .feed-heading h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .feed-heading span {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .post {
+            padding: 22px;
+        }
+
+        .post h3 {
+            margin: 0 0 8px;
+            font-size: 24px;
+            line-height: 1.25;
+            letter-spacing: 0;
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin: 0 0 15px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .author {
+            padding: 3px 8px;
+            border-radius: 999px;
+            color: var(--accent-strong);
+            background: var(--accent-soft);
+            font-weight: 700;
+        }
+
+        .content {
+            margin: 0;
+            color: #333942;
+            white-space: pre-wrap;
+        }
+
+        .empty {
+            padding: 34px 24px;
+            border: 1px dashed var(--line);
+            border-radius: 8px;
+            color: var(--muted);
+            text-align: center;
+            background: rgba(255, 253, 248, 0.7);
+        }
+
+        @media (max-width: 840px) {
+            .summary,
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .count {
+                justify-self: stretch;
+            }
+
+            .composer {
+                position: static;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .page {
+                width: min(100% - 24px, 1120px);
+                padding: 22px 0 40px;
+            }
+
+            .topbar,
+            .feed-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .status {
+                min-width: 0;
+            }
+
+            .brand h1 {
+                font-size: 24px;
+            }
+
+            .summary h2 {
+                font-size: 34px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <header class="topbar">
+            <div class="brand">
+                <div class="mark">B</div>
+                <div>
+                    <h1>轻博客</h1>
+                    <p>SQLite 驱动的本地留言板</p>
+                </div>
+            </div>
+            <div class="status">本地运行</div>
+        </header>
+
+        <section class="summary" aria-label="页面概览">
+            <div>
+                <h2>写下一条消息，马上在时间线上看到它。</h2>
+                <p>适合练习 Django 表单、视图、模板和 SQLite 数据读写。</p>
+            </div>
+            <div class="count">
+                <strong>{{ posts|length }}</strong>
+                <span>当前消息数</span>
+            </div>
+        </section>
+
+        <div class="layout">
+            <section class="composer" aria-labelledby="compose-title">
+                <div class="section-title">
+                    <h2 id="compose-title">发布消息</h2>
+                    <span>保存到 SQLite</span>
+                </div>
+
+                {% for message in messages %}
+                    <p class="message">{{ message }}</p>
+                {% endfor %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_div }}
+                    <button type="submit">发布</button>
+                </form>
+            </section>
+
+            <section class="feed" aria-label="消息列表">
+                <div class="feed-heading">
+                    <h2>最新消息</h2>
+                    <span>按发布时间倒序排列</span>
+                </div>
+
+                {% for post in posts %}
+                    <article class="post">
+                        <h3>{{ post.title }}</h3>
+                        <p class="meta">
+                            <span class="author">{{ post.author }}</span>
+                            <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"Y-m-d H:i" }}</time>
+                        </p>
+                        <p class="content">{{ post.content }}</p>
+                    </article>
+                {% empty %}
+                    <div class="empty">还没有消息，先发布第一条吧。</div>
+                {% endfor %}
+            </section>
+        </div>
+    </main>
+</body>
+</html>
