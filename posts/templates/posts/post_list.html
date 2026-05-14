@@ -94,12 +94,44 @@
             font-size: 14px;
         }
 
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .status::before {
             content: "";
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: var(--green);
+        }
+
+        .clock {
+            min-width: 132px;
+            padding: 8px 11px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            color: var(--ink);
+            background: var(--surface);
+            font-variant-numeric: tabular-nums;
+            text-align: center;
+            box-shadow: 0 8px 18px rgba(42, 36, 27, 0.07);
+        }
+
+        .clock time {
+            display: block;
+            font-size: 17px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .clock span {
+            display: block;
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 12px;
         }
 
         .summary {
@@ -345,8 +377,18 @@
                 flex-direction: column;
             }
 
+            .top-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
             .status {
                 min-width: 0;
+            }
+
+            .clock {
+                flex: 1;
+                min-width: 150px;
             }
 
             .brand h1 {
@@ -369,7 +411,13 @@
                     <p>SQLite 驱动的本地留言板</p>
                 </div>
             </div>
-            <div class="status">本地运行</div>
+            <div class="top-actions">
+                <div class="clock" aria-label="当前时间">
+                    <time id="clock-time">--:--:--</time>
+                    <span id="clock-date">加载中</span>
+                </div>
+                <div class="status">本地运行</div>
+            </div>
         </header>
 
         <section class="summary" aria-label="页面概览">
@@ -422,5 +470,29 @@
             </section>
         </div>
     </main>
+    <script>
+        const clockTime = document.querySelector("#clock-time");
+        const clockDate = document.querySelector("#clock-date");
+        const timeFormatter = new Intl.DateTimeFormat("zh-CN", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+        });
+        const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
+            month: "2-digit",
+            day: "2-digit",
+            weekday: "short",
+        });
+
+        function updateClock() {
+            const now = new Date();
+            clockTime.textContent = timeFormatter.format(now);
+            clockDate.textContent = dateFormatter.format(now);
+        }
+
+        updateClock();
+        window.setInterval(updateClock, 1000);
+    </script>
 </body>
 </html>
